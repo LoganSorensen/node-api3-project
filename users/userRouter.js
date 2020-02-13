@@ -22,7 +22,7 @@ router.post("/", validateUser, (req, res) => {
 router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
   const { id } = req.user;
   const post = { ...req.body, user_id: id }
-
+  
   Posts.insert(post)
     .then(inserted => {
       if (inserted) {
@@ -55,6 +55,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", validateUserId, (req, res) => {
   // console.log(req.user)
+  console.log("params", req.params)
   Users.getById(req.user.id)
     .then(user => {
       if (user) {
@@ -151,7 +152,7 @@ function validateUserId(req, res, next) {
       next();
     }
   })
-  .catch( err => {
+  .catch(err => {
     console.log(err)
     res.status(500).json({ errorMessage: "Could not retrieve user." })
   })
